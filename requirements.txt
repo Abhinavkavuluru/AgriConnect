@@ -1,0 +1,7 @@
+Flask
+flask-cors
+mysql-connector-python
+werkzeug
+paypalrestsdk
+twilio
+web3

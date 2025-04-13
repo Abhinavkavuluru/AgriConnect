@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home{% endblock %}</title>
+    <style>
+        /* Reset some default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin-top: 70px;
+        }
+
+        /* Fixed Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 12px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            height: 70px;
+        }
+
+        /* AgriConnect Logo */
+        .agri-logo {
+            background-color: black !important;
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            height: 50px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Navigation links */
+        .navbar-right .nav-link {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 17px; /* Ensures uniform font size */
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 6px;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .navbar-right .nav-link i {
+            font-size: 18px; /* Icon size should match text */
+            vertical-align: middle; /* Aligns the icon with text */
+            margin-right: 8px; /* Spacing between icon and text */
+        }
+
+        .navbar-right .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .profile-dropdown .nav-link {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Dropdown Content */
+        .dropdown-content {
+            position: absolute;
+            background: white;
+            min-width: 180px;
+            top: 45px;
+            right: 0;
+            border-radius: 8px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: left;
+            transition: 0.2s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .profile-dropdown:hover .dropdown-content,
+        .dropdown-content:hover {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dropdown Items */
+        .dropdown-content a {
+            color: #333;
+            padding: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .dropdown-content a i {
+            margin-right: 10px;
+            color: #1e3c72;
+        }
+
+        .dropdown-content a:hover {
+            background: #2a5298;
+            color: #fff;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #e74c3c;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Content styles */
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                height: auto;
+                padding: 15px;
+            }
+
+            .navbar-right {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .navbar-right .nav-link {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/3c8f2eb9d2.js" crossorigin="anonymous"></script> 
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <p class="agri-logo">AgriConnect</p>
+        </div>
+    
+        <div class="navbar-right">
+            <a href="{{ url_for('home') }}" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            <a href="{{ url_for('about') }}" class="nav-link"><i class="fas fa-info-circle"></i> About Us </a>
+            <a href="{{ url_for('manual') }}" class="nav-link"><i class="fas fa-book"></i> User Manual</a>
+            
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown">
+                <a href="#" class="nav-link" style="gap: 8px;">
+                    <img src="{{ url_for('static', filename='profile.jpg') }}" 
+                         alt="Profile" style="width: 30px; height: 30px; border-radius: 90%;">
+                    Profile <i class="fas fa-caret-down"></i>
+                </a>
+                
+                <div class="dropdown-content">
+                    <a href="{{ url_for('details1') }}"><i class="fas fa-user"></i> Details</a>
+                    <a href="{{ url_for('messages') }}"><i class="fas fa-envelope"></i>View Messages</a>
+                    <a href="{{ url_for('view_contract') }}"><i class="fas fa-file-contract"></i> View Contracts </a>
+                    <form action="{{ url_for('logout') }}" method="GET">
+                        <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i>Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Make a Payment{% endblock %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card shadow-lg p-4 rounded-4" style="width: 50rem; max-width: 90%;">
+        <div class="card-header text-center">
+            <h2>💳 Make a Payment</h2>
+        </div>
+
+        <div class="card-body">
+            <form id="payment-form">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <tbody>
+                            <tr>
+                                <th class="text-end">👤 Full Name:</th>
+                                <td><input type="text" class="form-control input-field" id="name" placeholder="Enter your full name" required></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end">📧 Email:</th>
+                                <td><input type="email" class="form-control input-field" id="email" placeholder="Enter your email" required></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end">📞 Phone Number:</th>
+                                <td><input type="text" class="form-control input-field" id="phone" placeholder="Enter your phone number" required></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end">💵 Amount (USD):</th>
+                                <td><input type="number" step="0.01" class="form-control input-field" id="amount" placeholder="Enter amount" required></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+            <!-- PayPal Button -->
+            <div class="text-center mt-4">
+                <div id="paypal-button-container"></div>
+                <p class="text-muted mt-3">🔒 Secure payments processed via PayPal</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=ARJgZsSlF6FXNNDw0Dt5Jcq_G9eX1CWHVMkESfBgTW3RiX21dV0e7Ul9empuN5NHmSWT1j-5sPJ9h60x&currency=USD" 
+        onerror="alert('PayPal SDK failed to load!')"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof paypal === "undefined") {
+            alert("PayPal SDK failed to load. Please check your internet connection or client ID.");
+            return;
+        }
+
+        paypal.Buttons({
+            createOrder: function (data, actions) {
+                let name = document.getElementById("name").value;
+                let amount = document.getElementById("amount").value;
+
+                if (!name || !amount || parseFloat(amount) <= 0) {
+                    alert("Please enter valid details.");
+                    return;
+                }
+
+                return actions.order.create({
+                    purchase_units: [{ amount: { value: amount } }]
+                });
+            },
+
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    let name = document.getElementById("name").value;
+                    let amount = document.getElementById("amount").value;
+                    let transactionID = details.id;
+
+                    // Redirect to payment success page with details
+                    let url = `/payment_success?name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}&transaction_id=${encodeURIComponent(transactionID)}`;
+                    window.location.href = url;
+                });
+            },
+
+            onError: function (err) {
+                alert("PayPal payment error: " + err);
+            }
+        }).render('#paypal-button-container');
+    });
+</script>
+
+<!-- Additional Styling -->
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Table Styling */
+    .table {
+        margin-bottom: 0;
+        border-radius: 10px;
+        overflow: hidden;
+        background: white;
+    }
+
+    .table th {
+        width: 35%;
+        background-color: #f0f0f0;
+        padding: 12px;
+        font-weight: bold;
+        text-align: right;
+        color: #333;
+    }
+
+    .table td {
+        width: 65%;
+        padding: 12px;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .input-field:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Centering PayPal button */
+    #paypal-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .text-muted {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    /* Fade-In Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Submit Button */
+    .btn-submit {
+        background-color: #007bff;
+        border: none;
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-submit:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .card {
+            padding: 20px;
+        }
+
+        .table th, .table td {
+            display: block;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .table th {
+            text-align: left;
+            font-weight: bold;
+            background-color: transparent;
+        }
+    }
+</style>
+
+{% endblock %}

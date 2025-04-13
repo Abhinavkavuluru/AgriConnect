@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Crop List{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="font-family: Arial, sans-serif; line-height: 1.6;">
+    <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 20px; color: #008CBA;">Available Crops</h1>
+    <table class="table table-bordered mt-4" style="width: 100%; border-collapse: collapse; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <thead style="background-color: #f2f2f2; color: #333;">
+            <tr>
+                <th style="padding: 12px 15px; text-align: center; font-size: 1.1rem;">Crop Name</th>
+                <th style="padding: 12px 15px; text-align: center; font-size: 1.1rem;">Price per Ton</th>
+                <th style="padding: 12px 15px; text-align: center; font-size: 1.1rem;">Quantity</th>
+                <th style="padding: 12px 15px; text-align: center; font-size: 1.1rem;">Total Amount</th>
+                <th style="padding: 12px 15px; text-align: center; font-size: 1.1rem;">Added On</th>
+                <th style="padding: 12px 15px; text-align: center; font-size: 1.1rem;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for crop in crops %}
+            <tr style="background-color: #ffffff; border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px 15px; font-size: 1rem; color: #333;">{{ crop[0] }}</td>
+                <td style="padding: 12px 15px; font-size: 1rem; color: #333;">{{ crop[1] }}</td>
+                <td style="padding: 12px 15px; font-size: 1rem; color: #333;">{{ crop[2] }}</td>
+                <td style="padding: 12px 15px; font-size: 1rem; color: #333;">{{ crop[3] }}</td>
+                <td style="padding: 12px 15px; font-size: 1rem; color: #333;">{{ crop[5].strftime('%d/%m/%Y') }}</td>
+                <td style="padding: 12px 15px; text-align: center;">
+                    <button type="button" class="btn btn-primary chat-btn" 
+                    data-receiver-email="{{ crop[4] }}" 
+                    style="background-color: #008CBA; color: white; border: none; padding: 10px 20px; cursor: pointer;">
+                    Click here to communicate with the farmer
+                    </button>
+
+                    <!-- New View Reviews button -->
+                    <button type="button" class="btn btn-secondary review-btn" 
+                    data-farmer-email="{{ crop[4] }}" 
+                    style="background-color: #27ae60; color: white; border: none; padding: 10px 20px; cursor: pointer;">
+                    View Reviews
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Display logged-in user's email -->
+    <div class="mt-4">
+        <h3>Logged-in User: <span id="user-email" style="color: #008CBA;">{{ session['email'] }}</span></h3>
+    </div>
+</div>
+
+<!-- Review Box (initially hidden) -->
+<div id="review-box" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 300px; background: #f9f9f9; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; padding: 15px;">
+    <h5 style="margin: 0 0 10px; color: #27ae60;">Farmer Reviews</h5>
+    <p><strong>Farmer Email:</strong> <span id="farmer-email" style="color: #333;"></span></p>
+    <p id="farmer-review" style="color: #333;">No reviews available.</p>
+    <button id="close-review-btn" style="margin-top: 10px; background-color: #e74c3c; color: white; border: none; padding: 8px 15px; 
+        border-radius: 5px; cursor: pointer; width: 100%;">Close</button>
+</div>
+
+<script>
+    let selectedFarmerEmail = '';
+
+    document.querySelectorAll('.review-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            selectedFarmerEmail = this.getAttribute('data-farmer-email');  // Get the farmer's email
+            document.getElementById('farmer-email').textContent = selectedFarmerEmail;
+
+            // Fetch the comment from the backend using the farmer's email
+            fetch(`/get_comment_by_farmer_email?farmer_email=${selectedFarmerEmail}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('farmer-review').textContent = data.comment || "No reviews available.";
+                    } else {
+                        document.getElementById('farmer-review').textContent = "No reviews available.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("An error occurred while fetching the review.");
+                });
+
+            document.getElementById('review-box').style.display = 'block';
+        });
+    });
+
+    // Close the review box
+    document.getElementById('close-review-btn').addEventListener('click', function() {
+        document.getElementById('review-box').style.display = 'none';
+    });
+</script>
+
+{% endblock %}

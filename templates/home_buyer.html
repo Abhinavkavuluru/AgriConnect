@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Buyer Dashboard{% endblock %}
+
+{% block content %}
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<div class="flex flex-col md:flex-row justify-between items-center min-h-screen px-8 md:px-12">
+    
+    <!-- Left Section -->
+    <div class="w-full md:w-1/2 text-center md:text-left">
+        <h1 id="welcome-text" class="text-4xl font-bold text-blue-700 opacity-0">Welcome, Buyer!</h1><br>
+        <p id="description-text" class="text-lg text-gray-800 opacity-0 leading-relaxed mt-4">
+            AgriConnect empowers farmers with secure contracts, fair pricing, and assured payments. By connecting directly with buyers and using smart technology, we eliminate middlemen, provide real-time market insights, and enable seamless transactions for a sustainable agricultural ecosystem.
+        </p>
+        <p style="margin-bottom: 40px;"></p>
+
+        <!-- Buttons -->
+        <div class="mt-6 flex flex-col md:flex-row md:space-x-4">
+            <a href="{{ url_for('view_crops') }}" 
+               class="px-4 py-2 text-lg font-semibold bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition whitespace-nowrap">
+                🌾 View List of Crops
+            </a>
+            
+            <a href="{{ url_for('make_payment1') }}" 
+               class="px-4 py-2 text-lg font-semibold bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition whitespace-nowrap">
+                💳 Make Payment
+            </a>
+
+            <a href="{{ url_for('buyer_page') }}" 
+               class="px-4 py-2 text-lg font-semibold bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 transition whitespace-nowrap">
+                📜 Fetch Smart Contract
+            </a>
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0">
+        <img src="static/image.png" alt="Buyer Dashboard" 
+             class="w-[575px] h-auto object-cover rounded-lg shadow-lg">
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        gsap.to("#welcome-text", { opacity: 1, duration: 1, x: 0 });
+        
+        gsap.fromTo("#description-text", 
+            { opacity: 0, y: 20 }, 
+            { opacity: 1, y: 0, duration: 1.5, delay: 0.5 }
+        );
+
+        // Letter by Letter Text Animation
+        let text = document.getElementById("welcome-text");
+        let originalText = text.innerText;
+        text.innerText = "";
+        let i = 0;
+
+        function typeEffect() {
+            if (i < originalText.length) {
+                text.innerText += originalText.charAt(i);
+                i++;
+                setTimeout(typeEffect, 80);
+            }
+        }
+
+        setTimeout(typeEffect, 500);
+    });
+</script>
+
+{% endblock %}

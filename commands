@@ -1,0 +1,20 @@
+docker network create app_network
+
+docker build -t hardhat-node .
+
+docker run -it --name my-hardhat-node --network app_network -p 8545:8545 hardhat-node
+
+docker stop my-hardhat-node
+docker rm my-hardhat-node
+docker run -it --name my-hardhat-node --network app_network -p 8545:8545 hardhat-node
+
+
+docker build -t flask-app .
+
+docker run -it --name my-flask-app --network app_network -p 5000:5000 -e MODE=docker flask-app
+
+docker stop my-flask-app
+docker rm my-flask-app
+docker run -it --name my-flask-app --network app_network -p 5000:5000 -e MODE=docker flask-app
+
+

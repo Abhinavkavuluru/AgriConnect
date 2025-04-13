@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Buyer - Make Payment{% endblock %}
+
+{% block content %}
+
+<head>
+    <title>Buyer - Make Payment</title>
+    <script defer src="{{ url_for('static', filename='ethers.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='contract.js') }}"></script>
+    <style>
+        body {
+            margin-top: 40px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        input, textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+        .fetch-btn {
+            background-color: #3498db;
+            color: white;
+            margin-top: 10px;
+        }
+        .fetch-btn:hover {
+            background-color: #2980b9;
+        }
+        .pay-btn {
+            background-color: #27ae60;
+            color: white;
+            margin-top: 10px;
+        }
+        .pay-btn:hover {
+            background-color: #218c54;
+        }
+        .accept-btn {
+            background-color: #f39c12;
+            color: white;
+            margin-top: 10px;
+        }
+        .accept-btn:hover {
+            background-color: #e67e22;
+        }
+        .contract-details {
+            margin-top: 20px; /* Increased margin to move it further down */
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: left;
+        }
+        .comment-section {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" style="margin-top: 50px;">
+        <h2>🛒 Buyer Interface - Make Payment</h2>
+
+        <label style="text-align: left; font-weight: bold;">Enter Contract Address:</label>
+        <input type="text" id="contractAddress" required>
+
+        <button class="fetch-btn" onclick="fetchContractDetails()">🔍 Fetch Details</button>
+
+        <!-- 🟢 Moved contract details further down with margin -->
+        <div id="contractDetails" class="contract-details">
+            <p style="text-align: center;">Details Will be displayed here.</p>
+        </div>  
+
+        <button id="makePaymentBtn" class="pay-btn">💰 Make Payment</button>  
+        <button id="orderAcceptedBtn" class="accept-btn" onclick="acceptOrder()">🚚 Accept Order</button>
+
+        <!-- Comment Section -->
+        <div id="commentSection" class="comment-section">
+            <textarea id="commentText" placeholder="Enter your comment or review..." rows="4"></textarea>
+            <button class="pay-btn" onclick="submitComment()">Submit Comment</button>
+        </div>
+    </div>
+
+    <script>
+        // Clear the contract address field on page load
+        window.onload = function () {
+            document.getElementById("contractAddress").value = "";
+        };
+
+        async function getConnectedAccount() {
+            if (!window.ethereum) {
+                alert("❌ MetaMask is required.");
+                return null;
+            }
+            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+            return accounts[0];
+        }
+
+        document.getElementById("makePaymentBtn").addEventListener("click", async function () {
+            const buyerAddress = await getConnectedAccount();
+            if (!buyerAddress) return;
+
+            // ✅ Call makePayment() function from contract.js
+            await makePayment();
+        });
+
+        function acceptOrder() {
+            console.log("Accept Order button clicked!");
+            
+            // Contract address validation
+            const contractAddress = document.getElementById("contractAddress").value;
+
+            if (!contractAddress) {
+                alert("Please enter a contract address before accepting the order.");
+                return;  // Stop further execution if the address is not entered
+            }
+
+            // Allow the user to proceed with commenting
+            console.log("Contract address entered:", contractAddress);
+        }
+
+        function submitComment() {
+            const comment = document.getElementById("commentText").value;
+            const contractAddress = document.getElementById("contractAddress").value;
+            
+            if (!contractAddress) {
+                alert("Please enter a contract address before submitting the comment.");
+                return;
+            }
+            
+            if (!comment) {
+                alert("Please enter a comment before submitting.");
+                return;
+            }
+
+            // Send the comment to the server
+            fetch("/submit_comment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ contract_address: contractAddress, comment: comment })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Comment submitted successfully!");
+                    document.getElementById("commentText").value = "";  // Clear the comment field
+                } else {
+                    alert("Failed to submit comment. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while submitting the comment.");
+            });
+        }
+    </script>
+
+</body>
+
+{% endblock %}

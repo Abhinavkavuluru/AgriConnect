@@ -1,0 +1,36 @@
+# Bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+env/
+venv/
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+*.tmp
+
+# Videos and binaries
+*.mp4
+*.msi
+*.exe
+*.zip
+*.tar
+*.rar
+
+# Specific files
+Applications/mysql-installer-community-8.0.39.0.msi
+static/backgrnd.mp4
+
+# Environment variables
+.env

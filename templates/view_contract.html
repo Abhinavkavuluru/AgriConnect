@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}View Contracts{% endblock %}
+
+{% block content %}
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<!-- Added mt-24 to push down -->
+<br><br><br>
+<div class="contract-container mt-24 shadow-lg transition-transform transform hover:scale-105">
+    <h2 class="text-3xl font-bold text-gray-800 mb-4 flex items-center justify-center">
+        📜 Contract Details
+    </h2>
+
+    {% if contracts %}
+        <div class="overflow-x-auto rounded-lg">
+            <table class="w-full table-fixed border border-gray-200 shadow-md rounded-lg">
+                <thead>
+                    <tr class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white uppercase tracking-wider">
+                        <th class="py-3 px-6 text-left w-1/4">Other Party Email</th>
+                        <th class="py-3 px-6 text-left w-1/3">Other Party Address</th>
+                        <th class="py-3 px-6 text-left w-1/3">Contract Address</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for contract in contracts %}
+                        <tr class="hover:bg-blue-100 transition duration-200">
+                            <td class="py-3 px-6 text-gray-700 break-all">{{ contract.other_email }}</td>
+                            <td class="py-3 px-6 text-gray-700 break-all">{{ contract.other_address }}</td>
+                            <td class="py-3 px-6 text-gray-700 break-all">{{ contract.contract_address }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-gray-500 text-center mt-4 text-lg font-semibold">No contracts found.</p>
+    {% endif %}
+</div>
+
+<style>
+    .contract-container {
+        margin-bottom: 50px;
+        max-width: 1300px; /* Increased width */
+        margin: 50px auto;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    h2 {
+        color: #2c3e50;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    th {
+        background-color: #2a5298;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+{% endblock %}

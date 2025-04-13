@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Background Image */
+        body {
+            background: url("static/background1.png") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex justify-center items-center min-h-screen relative">
+    <!-- Main Content -->
+    <div class="relative z-10 bg-white bg-opacity-10 backdrop-blur-md shadow-lg rounded-lg p-8 w-96">
+        <h2 class="text-2xl font-bold text-center text-white mb-5" style="color: rgb(3, 82, 3);">🌱 AgriConnect</h2>
+
+        <!-- Display flashed messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-4">
+                    <ul class="text-center">
+                        {% for category, message in messages %} 
+                            <li class="p-2 rounded bg-red-500 text-white">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Login Form -->
+        <form method="POST" class="space-y-4">
+            <div>
+                <label for="email" class="block text-sm font-medium" style="color: black;font-size:large;">Email:</label>
+                <input type="email" name="email" required style="background-color:rgb(200, 216, 136)"
+                    class="w-full p-3 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium" style="color: black;font-size:large">Password:</label>
+                <input type="password" name="password" required style="background-color: rgb(200, 216, 136);"
+                    class="w-full p-3 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="text-center">
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition" style="background-color: black;">
+                    Log in
+                </button>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="{{ url_for('register') }}" class="text-blue-300 hover:underline" style="color: black;">Create new account</a>
+            </div>
+
+            <div class="text-center">
+                <a href="{{ url_for('forgot_password') }}" class="text-blue-300 hover:underline" style="color: black;">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

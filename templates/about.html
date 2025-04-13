@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<section class="about-section bg-white text-black py-12 text-center" style="padding: 50px 0; text-align: center;">
+    <div class="container max-w-5xl mx-auto flex flex-wrap justify-center" style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <div class="about-content text-left max-w-3xl mx-auto" style="text-align: left; max-width: 800px; margin: 0 auto;">
+            <h1 class="about-heading text-4xl font-bold mb-6" style="font-size: 2.5rem; font-weight: bold; margin-bottom: 20px;" id="animated-about-heading"></h1>
+            <p id="animated-text" class="text-xl font-semibold mb-4"></p>
+            <p class="text-lg leading-7 mb-4 opacity-0 transition-opacity duration-1000 delay-500" id="desc1" style="font-size: 2rem; line-height: 1.6; margin-bottom: 20px;">
+                
+            </p>
+            <p class="text-lg leading-7 mb-4 opacity-0 transition-opacity duration-1000 delay-700" id="desc2" style="font-size: 1.2rem; line-height: 1.6; margin-bottom: 20px;">
+                At AgriConnect, we are dedicated to revolutionizing the agricultural landscape by bridging the gap between farmers and buyers through a user-friendly platform.
+            </p>
+            <p class="text-lg leading-7 opacity-0 transition-opacity duration-1000 delay-900" id="desc3" style="font-size: 1.2rem; line-height: 1.6; margin-bottom: 20px;">
+                Our mission is to empower farmers with secure and transparent digital solutions for contract farming agreements, ensuring fair pricing, secure transactions, and reliable markets for their crops. By providing a seamless interface for buyers and farmers, AgriConnect fosters trust, efficiency, and growth in the agricultural ecosystem.
+            </p>
+        </div>
+    </div>
+</section>
+
+<footer style="background-color: rgb(29, 29, 29); color: white; padding: 50px 0; text-align: center;">
+    <h2 style="margin-bottom: 30px;">Team Details:</h2>
+    <div class="container" style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <div class="card" style="width: 300px; background-color: #fff; color: #333; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; margin: 20px; text-align: center; padding: 20px;">
+            <img src="static/A1.png" alt="Team Member 1" style="width: 110px; height: 110px; object-fit: cover; border-radius: 50%; margin: auto;">
+            <div class="card-content">
+                <h3 style="font-size: 1.5rem; margin: 10px 0;">Abhinav</h3>
+                <h5 style="font-size: 1rem; color: #555;">245121737004@mvsrec.edu.in</h5>
+            </div>
+        </div>
+        <div class="card" style="width: 300px; background-color: #fff; color: #333; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; margin: 20px; text-align: center; padding: 20px;">
+            <img src="static/u1.png" alt="Team Member 2" style="width: 110px; height: 110px; object-fit: cover; border-radius: 50%; margin: auto;">
+            <div class="card-content">
+                <h3 style="font-size: 1.5rem; margin: 10px 0;">Uday Sai</h3>
+                <h5 style="font-size: 1rem; color: #555;">245121737045@mvsrec.edu.in</h5>
+            </div>
+        </div>
+        <div class="card" style="width: 300px; background-color: #fff; color: #333; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; margin: 20px; text-align: center; padding: 20px;">
+            <img src="static/s1.png" alt="Team Member 3" style="width: 110px; height: 110px; object-fit: cover; border-radius: 50%; margin: auto;">
+            <div class="card-content">
+                <h3 style="font-size: 1.5rem; margin: 10px 0;">Sai Kumar</h3>
+                <h5 style="font-size: 1rem; color: #555;">245121737003@mvsrec.edu.in</h5>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Letter Animation Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const titleText = "About Us";
+        const titleContainer = document.getElementById("animated-about-heading");
+        let titleIndex = 0;
+
+        function typeTitleLetterByLetter() {
+            if (titleIndex < titleText.length) {
+                titleContainer.innerHTML += titleText[titleIndex];
+                titleIndex++;
+                setTimeout(typeTitleLetterByLetter, 50);
+            }
+        }
+
+        const text = "Welcome to AgriConnect!";
+const textContainer = document.getElementById("animated-text");
+textContainer.style.fontSize = "2rem";  // Increase the size
+  // Make it bold
+let index = 0;
+
+function typeLetterByLetter() {
+    if (index < text.length) {
+        textContainer.innerHTML += text[index];
+        index++;
+        setTimeout(typeLetterByLetter, 50);
+    } else {
+        document.getElementById("desc1").classList.remove("opacity-0");
+        document.getElementById("desc2").classList.remove("opacity-0");
+        document.getElementById("desc3").classList.remove("opacity-0");
+    }
+}
+
+        typeTitleLetterByLetter();
+        setTimeout(typeLetterByLetter, 500);
+    });
+</script>
+{% endblock %}

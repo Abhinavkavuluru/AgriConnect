@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block title %}Add Crop Details{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="wrapper d-flex align-items-center justify-content-center">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>🌾 Add Crop Details</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('add_crop') }}" method="POST" onsubmit="return showSuccessMessage()">
+                        <input type="hidden" id="crop_id" name="crop_id">
+                        
+                        <div class="form-group">
+                            <label for="crop_name">🌱 Crop Name</label>
+                            <input type="text" class="form-control input-field" id="crop_name" name="crop_name" placeholder="E.g., Wheat, Rice" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price_per_ton">💰 Price per Ton</label>
+                            <input type="number" step="0.01" class="form-control input-field" id="price_per_ton" name="price_per_ton" placeholder="E.g., 2000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">📦 Quantity (Tons)</label>
+                            <input type="number" step="0.01" class="form-control input-field" id="quantity" name="quantity" placeholder="E.g., 50" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total_amount">💵 Total Amount</label>
+                            <input type="number" step="0.01" class="form-control input-field" id="total_amount" name="total_amount" readonly>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-submit btn-lg">🚀 Submit</button>
+                        </div>
+                    </form>
+
+                    <!-- View List of Crops Button -->
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-view-list btn-lg" id="view-crops-btn">📋 View List of Crops</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crops List Section (Initially Hidden) -->
+        <div class="container mt-5" id="crops-list" style="display: none;">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>🌱 Your Crops</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Crop Name</th>
+                                <th>Price per Ton</th>
+                                <th>Quantity</th>
+                                <th>Total Amount</th>
+                                <th>Added On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="crops-table-body">
+                            <!-- Crops will be inserted dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .input-field:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background-color: #007bff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* View List of Crops Button */
+        .btn-view-list {
+            margin-top: 20px;
+            background-color: #28a745;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-view-list:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        /* Table Styling */
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .table th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .table td {
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Edit Crop Details Button */
+        .btn-edit {
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+
+    <script>
+        document.getElementById('price_per_ton').addEventListener('input', calculateTotalAmount);
+        document.getElementById('quantity').addEventListener('input', calculateTotalAmount);
+
+        function calculateTotalAmount() {
+            const price = parseFloat(document.getElementById('price_per_ton').value) || 0;
+            const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            document.getElementById('total_amount').value = (price * quantity).toFixed(2);
+        }
+
+        function showSuccessMessage() {
+            alert('✅ Crop details added successfully!');
+            return true;
+        }
+
+        document.getElementById('view-crops-btn').addEventListener('click', function() {
+            fetch('/get_crops')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let cropsTableBody = document.getElementById('crops-table-body');
+                        cropsTableBody.innerHTML = '';
+        
+                        data.crops.forEach(crop => {
+                            let row = `
+                                <tr>
+                                    <td>${crop.crop_name}</td>
+                                    <td>${crop.price_per_ton}</td>
+                                    <td>${crop.quantity}</td>
+                                    <td>${crop.total_amount}</td>
+                                    <td>${new Date(crop.created_at).toLocaleDateString('en-GB')}</td> <!-- Display date -->
+                                    <td>
+                                        <button class="btn btn-edit" onclick="editCrop(${crop.id}, '${crop.crop_name}', ${crop.price_per_ton}, ${crop.quantity}, ${crop.total_amount})">✏️ Edit</button>
+                                    </td>
+                                </tr>
+                            `;
+                            cropsTableBody.innerHTML += row;
+                        });
+        
+                        document.getElementById('crops-list').style.display = 'block';
+                    }
+                });
+        });
+        
+
+        function editCrop(id, name, price, quantity, total) {
+            document.getElementById('crop_id').value = id;
+            document.getElementById('crop_name').value = name;
+            document.getElementById('price_per_ton').value = price;
+            document.getElementById('quantity').value = quantity;
+            document.getElementById('total_amount').value = total;
+        }
+    </script>
+
+
+{% endblock %}
