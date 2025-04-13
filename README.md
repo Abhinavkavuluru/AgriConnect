@@ -43,7 +43,7 @@ This project has two core components:
 
 ### ✅ 1. Set up Smart Contract Backend (Smart_contract repo)
 
-```bash
+
 git clone https://github.com/yourusername/Smart_contract.git
 cd Smart_contract
 npm install
