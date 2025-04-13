@@ -64,7 +64,7 @@ TWILIO_PHONE_NUMBER=your_twilio_phone
 
 
 ✅ 3. MySQL Setup
-Start your MySQL server
+Setup the Mysql database using the queries uploaded in sqlqueries.txt
 
 ✅ 4. Run the Flask App
 
