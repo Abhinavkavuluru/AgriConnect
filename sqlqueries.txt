@@ -1,0 +1,103 @@
+CREATE DATABASE flask_login;
+
+USE flask_login;
+
+
+DROP TABLE IF EXISTS users;
+
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE CHECK (email LIKE '%@gmail.com'),
+    password VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(15) NOT NULL CHECK (phone_number REGEXP '^[0-9]{10}$'),
+    user_type ENUM('farmer', 'buyer') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- View the table data
+SELECT * FROM users;
+
+
+USE flask_login;
+DROP TABLE IF EXISTS crops;
+CREATE TABLE crops (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    crop_name VARCHAR(255) NOT NULL,
+    price_per_ton DECIMAL(10, 2) NOT NULL,
+    quantity DECIMAL(10, 2) NOT NULL,
+    total_amount DECIMAL(15, 2) NOT NULL,
+    farmer_email VARCHAR(255) NOT NULL
+);
+ALTER TABLE crops ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+select * from crops;
+
+DROP TABLE IF EXISTS messages;
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    farmer_email VARCHAR(255) NOT NULL,
+    sender_email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+select * from messages;
+
+CREATE TABLE chat_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_email VARCHAR(255) NOT NULL,
+    receiver_email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS chat_messages;
+
+DROP TABLE IF EXISTS user_details;
+CREATE TABLE user_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(15) NOT NULL,
+    upi_id VARCHAR(100) NULL
+);
+
+select * from user_details;
+
+
+CREATE TABLE contracts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    farmer_address VARCHAR(255) NOT NULL,
+    buyer_address VARCHAR(255) NOT NULL,
+    contract_address VARCHAR(255) NOT NULL UNIQUE,
+    contract_years INT NOT NULL,
+    price DECIMAL(18,8) NOT NULL,
+    quantity INT NOT NULL,
+    product_type VARCHAR(255) NOT NULL,
+    payment_made BOOLEAN DEFAULT FALSE,
+    order_accepted BOOLEAN DEFAULT FALSE,
+    delivery_confirmed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE contracts 
+ADD COLUMN payment_completed_years INT DEFAULT 0; -- Track completed payment years
+ALTER TABLE contracts 
+ADD COLUMN farmer_email VARCHAR(255) NOT NULL, 
+ADD COLUMN buyer_email VARCHAR(255) NOT NULL;
+ALTER TABLE contracts 
+ADD COLUMN comment TEXT NULL; -- To store the comment for each contract
+
+
+select * from contracts;
+
+DROP TABLE IF EXISTS contracts;
+
+
+
