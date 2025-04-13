@@ -67,6 +67,7 @@ TWILIO_PHONE_NUMBER=your_twilio_phone
 Start your MySQL server
 
 ✅ 4. Run the Flask App
+```bash
 python app.py
 App runs at: http://localhost:5000
 
