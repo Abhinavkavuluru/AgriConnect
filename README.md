@@ -73,49 +73,67 @@ App runs at: http://localhost:5000
 
 ✅ Make sure the Hardhat node is running before launching the Flask app!
 
-🧪 Features & Modules
-•	👨‍🌾 Farmer Features
-   •	Register/Login
-   •	List crops
-   •	Chat with buyers
-   •	Create blockchain contracts
-•	🛒 Buyer Features
-   •	Browse available crops
-   •	Accept orders
-   •	Make payments (via PayPal)
-   •	Confirm deliveries
-•	🔐 Security
-   •	OTP-based password reset (via Twilio)
-   •	Smart contract-backed secure payments
-   •	Blockchain ledger-based agreement tracking
+## 🧪 Features & Modules
 
+### 👨‍🌾 Farmer Features
+- Register/Login  
+- List crops  
+- Chat with buyers  
+- Create blockchain contracts  
 
-🧠 Technologies Used
-Layer	                    Tech
-Smart Contract	          Solidity, Hardhat, MetaMask
-Web Backend	             Python, Flask
-Frontend	                HTML, CSS, JS
-DB	                      MySQL
-Messaging	             Twilio API
-Payments	                PayPal SDK
+### 🛒 Buyer Features
+- Browse available crops  
+- Accept orders  
+- Make payments (via PayPal)  
+- Confirm deliveries  
 
-🤝 Team & Acknowledgements
-Developed by:
-   •	K. Abhinav 
-   •	E. Uday Sai 
-   •	P. Sai Kumar 
-Guided by: Mrs. K. Ramya Madhavi
-Department of Information Technology
+### 🔐 Security
+- OTP-based password reset (via Twilio)  
+- Smart contract-backed secure payments  
+- Blockchain ledger-based agreement tracking  
+
+---
+
+## 🧠 Technologies Used
+
+| Layer           | Tech                         |
+|-----------------|------------------------------|
+| Smart Contract  | Solidity, Hardhat, MetaMask  |
+| Web Backend     | Python, Flask                |
+| Frontend        | HTML, CSS, JS                |
+| Database        | MySQL                        |
+| Messaging       | Twilio API                   |
+| Payments        | PayPal SDK                   |
+
+---
+
+## 🤝 Team & Acknowledgements
+
+**Developed by:**
+- K. Abhinav  
+- E. Uday Sai  
+- P. Sai Kumar  
+
+**Guided by:**  
+**Mrs. K. Ramya Madhavi**  
+Department of Information Technology  
 Maturi Venkata Subba Rao Engineering College (MVSR)
 
+---
 
-📈 Future Enhancements
-   •	AI-based crop price prediction
-   •	Multilingual support
-   •	Real-time blockchain visualization
-   •	UPI & Crypto wallet integrations
-   •	Mobile App with push notifications
+## 📈 Future Enhancements
 
-📃 License
-This project is for academic and research purposes. For production use, please ensure proper key encryption and API security.
+- AI-based crop price prediction  
+- Multilingual support  
+- Real-time blockchain visualization  
+- UPI & Crypto wallet integrations  
+- Mobile App with push notifications  
+
+---
+
+## 📃 License
+
+This project is for academic and research purposes.  
+For production use, please ensure proper key encryption and API security.
+
 
